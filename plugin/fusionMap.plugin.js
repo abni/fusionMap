@@ -1,7 +1,8 @@
+'use strict';
 // Utility
 if ( typeof Object.create !== 'function' ) {
     Object.create = function( obj ) {
-        function F() {};
+        function F() {}
         F.prototype = obj;
         return new F();
     };
@@ -17,9 +18,34 @@ if ( typeof Object.create !== 'function' ) {
 
             self.options = $.extend( {}, $.fn.fusionMap.options, options );
 
+            self.parseUrl(self.options.publishedtable);
+
             self.getMapStyle().done(function(result){
                 self.createMap(result);
             });
+        },
+
+        parseUrl: function(url){
+            var lat = url.match(/lat=(\d*).(\d*)/);
+            this.options.lat = lat[1] + '.' + lat[2];
+
+            var lng = url.match(/lng=(\d*).(\d*)/);
+            this.options.lng = lng[1] + '.' + lng[2];
+
+            var styledId = url.match(/y=(\d*)/);
+            this.options.styledId = parseInt(styledId[1]);
+
+            var templateId = url.match(/tmplt=(\d*)/);
+            this.options.templateId = parseInt(templateId[1]);
+
+            var zoom = url.match(/&z=(\d*)/);
+            this.options.zoom = parseInt(zoom[1]);
+
+            var column = url.match(/col+(\d*)/);
+            this.options.column = 'col'+column[1];
+
+            var tableid = url.match(/from\+(.+)&viz/);
+            this.options.tableid = tableid[1];
         },
 
         getMapStyle: function(){
@@ -29,45 +55,26 @@ if ( typeof Object.create !== 'function' ) {
         createMap: function(styledmap) {
             var map = new google.maps.Map(this.el, {
                 center: new google.maps.LatLng(this.options.lat, this.options.lng),
-                zoom: this.options.zoom,
-                mapTypeId: google.maps.MapTypeId.ROADMAP
+                zoom: this.options.zoom
             });
-            
-            // Create a new StyledMapType object, passing it the array of styles,
-            // as well as the name to be displayed on the map type control.
-            var styledMap = new google.maps.StyledMapType(styledmap, {name: "Custom map"});
 
-            //Associate the styled map with the MapTypeId and set it to display.
+            var styledMap = new google.maps.StyledMapType(styledmap, {
+                map: map,
+                name: 'Custom map',
+            });
+
             map.mapTypes.set('map_style', styledMap);
             map.setMapTypeId('map_style');
 
             var layer = new google.maps.FusionTablesLayer({
                 query: {
-                    select: 'geometry',
+                    select: this.options.column,
                     from: this.options.tableid
                 },
-                styles: [{
-                    polygonOptions: {
-                        strokeColor: "#000000",
-                        fillColor: "#000000",
-                        fillOpacity: 0.3
-                    }
-                }],
-                options: {
-                    //TO DO: SupressInfoWindow true/false setting
-                    suppressInfoWindows: false
-                },
-                map:map
+                map:map,
+                styleId: this.options.styledId,
+                templateId: this.options.templateId
             });
-
-            var infoWindow = new google.maps.InfoWindow();
-
-            //TO DO: Choose rows to display
-            // google.maps.event.addListener(layer, 'click', function(e) {
-            //     infoWindow.setContent(e.row.Borgmester.value);
-            //     infoWindow.setPosition(e.latLng);
-            //     infoWindow.open(map);
-            // });
         }
     };
 
@@ -82,11 +89,8 @@ if ( typeof Object.create !== 'function' ) {
 
     // Default plugin opitons
     $.fn.fusionMap.options = {
-        tableid: '1UeZKhy7LVNA8cm4XPtersd-zxMIjUXuWFTqMHHU',
+        publishedtable: 'https://www.google.com/fusiontables/embedviz?q=select+col0+from+1mCeZjguxvzGDqoS3riwHewrmsxkSQ7iqrHyyMPw&viz=MAP&h=false&lat=55.67815898330595&lng=12.573343990185549&t=1&z=11&l=col0&y=2&tmplt=2&hml=GEOCODABLE',
         mapstyles: 'scripts/maps/greymap.js',
-        lat: 56.2,
-        lng: 10.4,
-        zoom: 6
     };
 
 })( $, window, document);
