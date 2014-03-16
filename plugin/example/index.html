@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>fusionMap plugin - example</title>
+</head>
+<style>
+    /* Set container height and width */
+    #map, #map2{
+        width:500px;
+        height:500px;
+    }
+</style>
+<body>
+    <div id="map"></div>
+
+    <div id="map2"></div>
+
+    <!-- Add jQuery -->
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+
+    <!-- Add plugin -->
+    <script src="../scripts/fusionMap.plugin.js"></script>
+
+    <!-- Add Google Maps -->
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+
+    <!-- Set plugin options -->
+    <script>
+        $('#map').fusionMap({
+            publishedtable: 'https://www.google.com/fusiontables/embedviz?q=select+col0+from+1mCeZjguxvzGDqoS3riwHewrmsxkSQ7iqrHyyMPw&viz=MAP&h=false&lat=55.67815898330595&lng=12.573343990185549&t=1&z=11&l=col0&y=2&tmplt=2&hml=GEOCODABLE', // Link to published map
+            mapstyles: '../scripts/maps/paledown.js' // Path to map
+        });
+
+
+        // Add as many map you like ...
+        $('#map2').fusionMap({
+            publishedtable: 'https://www.google.com/fusiontables/embedviz?q=select+col4%3E%3E1+from+1z9AvHOsudqI9MWBSZ16h_vqQXbM7TXhv7XoLA4w&viz=MAP&h=false&lat=56.18856950268026&lng=11.63428799999997&t=1&z=6&l=col4%3E%3E1&y=2&tmplt=2&hml=KML', // Link to published map
+            mapstyles: '../scripts/maps/greymap.js' // Path to map
+        });
+    </script>
+</body>
+</html>
