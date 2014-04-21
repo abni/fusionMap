@@ -49,7 +49,13 @@ if ( typeof Object.create !== 'function' ) {
         },
 
         getMapStyle: function(){
-            return $.getJSON(this.options.mapstyles);
+            if(this.options.mapstyleIncluded){
+                var deferred = $.Deferred();
+                deferred.resolve(this.options.mapstyles);
+                return deferred.promise();
+            }else{
+                return $.getJSON(this.options.mapstyles);
+            }
         },
 
         createMap: function(styledmap) {
@@ -91,6 +97,7 @@ if ( typeof Object.create !== 'function' ) {
     $.fn.fusionMap.options = {
         publishedtable: 'https://www.google.com/fusiontables/embedviz?q=select+col0+from+1mCeZjguxvzGDqoS3riwHewrmsxkSQ7iqrHyyMPw&viz=MAP&h=false&lat=55.67815898330595&lng=12.573343990185549&t=1&z=11&l=col0&y=2&tmplt=2&hml=GEOCODABLE',
         mapstyles: 'scripts/maps/greymap.js',
+        mapstyleIncluded: false
     };
 
 })( $, window, document);

@@ -5,8 +5,11 @@ fusionMap plugin
 ###How it works
 Create a google fusiontable (<a href="https://support.google.com/fusiontables/answer/184641?hl=en&ref_topic=1652595">read more about fusion table here</a>) and grab the link to the table (Tools > Publish > link) and insert it into the plugin. Style your map as with <a href="http://gmaps-samples-v3.googlecode.com/svn/trunk/styledmaps/wizard/index.html">Styled Maps Wizard</a> and grab the JSON feed. Save the JSON and insert the path/URL to your map styles.
 
+###Generator
+<a href="http://andersbergmann.dk/fusionmap/generator.html">Try the generator</a> - no coding-skills required. Copy paste a link to a publish fusion table map and choose a map styling. Click download and get a HTML-file with your map.
+
 ### Example
-You can see a simple example in the example folder.
+You can see a simple example in the example folder (plugin>example).
 
 Or you can head over here and see a few examples:
 <a href="http://www.andersbergmann.dk/fusionmap">See demos and configuration here.</a>
